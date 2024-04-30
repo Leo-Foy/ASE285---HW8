@@ -13,3 +13,9 @@ Installed WebStorm IDE
 
 **Milestones**
 Finished milestone 1.
+
+
+
+# Week 16
+
+LoC 31

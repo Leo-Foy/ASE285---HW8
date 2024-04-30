@@ -47,15 +47,6 @@ async function writeFile(ar, fileName) {
         }
 
         console.log("All users saved.");
-        /*
-        user_info.create(dbUsers)
-        .then(() => {
-            console.log('Items uploaded successfully');
-        })
-        .catch((error) => {
-            console.error('Error uploading items:', error);
-        });
-        */
         await mongoose.connection.close();
     } catch (err) {
         console.log(err)
