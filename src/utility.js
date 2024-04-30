@@ -2,6 +2,10 @@
 
 const fs = require('fs');
 const {createHash} = require('crypto')
+require('dotenv').config();
+const mongoose = require('mongoose');
+
+const uri = process.env.MONGODB_URI;
 
 function readFile(fileName) {
     if (!fs.existsSync(fileName)) {
@@ -16,10 +20,43 @@ function readFile(fileName) {
     }
 }
 
-function writeFile(ar, fileName) {
+const schema = new mongoose.Schema({
+    user: String
+})
+// Define Mongoose model
+const user_info = mongoose.model('user_info', schema);
+async function writeFile(ar, fileName) {
     try {
         var res = ar.join("\n")
         fs.writeFileSync(fileName, res)
+        //drop items into database
+        await mongoose.connect(uri);
+        console.log("Connected to db");
+
+        let dbUsers = readFile(fileName);
+        const userObjects = dbUsers.map(user => ({ user: user }));
+        for (const userData of userObjects) {
+            try {
+                const user = new user_info(userData);
+                await user.save();
+
+                console.log("User saved:", user);
+            } catch (error) {
+                console.error("Error saving user:", error);
+            }
+        }
+
+        console.log("All users saved.");
+        /*
+        user_info.create(dbUsers)
+        .then(() => {
+            console.log('Items uploaded successfully');
+        })
+        .catch((error) => {
+            console.error('Error uploading items:', error);
+        });
+        */
+        await mongoose.connection.close();
     } catch (err) {
         console.log(err)
     }

@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "dependencies": {
-    "jest": "^27.5.1"
+    "dotenv": "^16.4.5",
+    "jest": "^27.5.1",
+    "mongoose": "^8.3.3"
   }
 }
