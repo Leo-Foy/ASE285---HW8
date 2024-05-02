@@ -47,9 +47,29 @@ async function writeFile(ar, fileName) {
         }
 
         console.log("All users saved.");
-        await mongoose.connection.close();
     } catch (err) {
         console.log(err)
+    } finally {
+        await mongoose.connection.close();
+    }
+}
+
+async function checkCredentials(filename, email, password){
+    await mongoose.connect(uri);
+    console.log("Reading database");
+    try{
+        const hashedPassword = hash(password);
+        const user = await user_info.findOne({ user: `${email}:${hashedPassword}` });
+
+        if (user) {
+            console.log("true");
+        } else {
+            console.log("false");
+        }
+    }catch (error){
+        console.log(error);
+    }finally {
+        await mongoose.connection.close();
     }
 }
 
@@ -57,4 +77,4 @@ function hash(input) {
     return createHash('sha256').update(input).digest('hex'); // never use md5
 }
 
-module.exports = {readFile, writeFile, hash};
+module.exports = {readFile, writeFile, checkCredentials, hash};
