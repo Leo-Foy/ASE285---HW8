@@ -18,4 +18,6 @@ Finished milestone 1.
 
 # Week 16
 
-LoC 31
+LoC 56
+Burndown rate: 100% of features completed
+Test Coverage: 0% no tests completed
